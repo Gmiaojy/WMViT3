@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE - Visual Studio Code & JetBrains
+.vscode/
+.idea/
+
+# Generated output files
+/outputs/
+*.csv
+*.jpg
+*.png
+*.tmp
+*.bak
