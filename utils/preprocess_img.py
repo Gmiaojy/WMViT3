@@ -3,7 +3,7 @@
 # @University  : ZheJiang University
 import math
 import os
-import shutil
+import argparse
 import cv2
 import numpy as np
 from PIL import Image
@@ -57,13 +57,10 @@ def normalize_and_2unit8(inp):
     return img
 
 
-def CalStokes():
+def CalStokes(args):
     """Calculate the Stokes parameters S0, S1, S2 from the input images."""
-    
-    # src_path = "wmvit3/datas/After"
-    # det_path = "wmvit3/datas/Input"
-    src_path = "wmvit3/datas/ROI"
-    det_path = "wmvit3/datas/input_example"
+    src_path = args.src_path
+    det_path = args.det_path 
     img_size = 256  # The size of the finally generated image
 
     maxPixel, maxPixel_imgPath  = findMax(src_path)
@@ -110,4 +107,12 @@ def CalStokes():
                 cv2.imwrite(os.path.join(det_subdir, imgName[:-4] + f"{suffix}.jpg"), img)
                 
 if __name__ == "__main__":
-    CalStokes()
+    parser = argparse.ArgumentParser(description="Calculate Stokes parameters from polarization images.")
+    parser.add_argument('--src_path', type=str, default="wmvit3/datas/ROI", help='Path to the source images.')
+    parser.add_argument('--det_path', type=str, default="wmvit3/datas/input_example", help='Path to save the processed images.')
+    args = parser.parse_args()
+    CalStokes(args)
+    # src_path = "wmvit3/datas/After"
+        # det_path = "wmvit3/datas/Input"
+    src_path = "wmvit3/datas/ROI"
+    det_path = "wmvit3/datas/input_example"

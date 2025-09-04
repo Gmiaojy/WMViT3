@@ -9,12 +9,10 @@ import numpy as np
 import time
 import argparse
 import os
-import cv2
 import logging
 import random
 import pandas as pd
 import pickle
-from thop import profile
 from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score
 from torchvision import transforms
 from torch.utils.data import DataLoader, Subset

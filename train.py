@@ -50,12 +50,12 @@ def parse_args():
     """Parses command-line arguments."""
     parser = argparse.ArgumentParser(description="wmvit3 Training Script")
     # Path Arguments
-    parser.add_argument('--data-dir', type=str, default='/home/user/gm/bert/datas/Input', help="Root directory of the dataset.")
+    parser.add_argument('--data-dir', type=str, required=True, help="Root directory of the dataset.")
     parser.add_argument('--output-dir', type=str, default="outputs", help="Directory to save logs, models, and plots.")
     parser.add_argument('--split-file', type=str, default='utils/dataset_splits_train_test.pkl', help="Path to the .pkl file containing train/test index splits.")
     
     # Training Hyperparameters
-    parser.add_argument('--epochs', type=int, default=2, help="Total number of training epochs.")
+    parser.add_argument('--epochs', type=int, default=200, help="Total number of training epochs.")
     parser.add_argument('--lr', type=float, default=0.002, help="Learning rate.")
     parser.add_argument('--wd', type=float, default=0.01, help="Weight decay coefficient for the AdamW optimizer (L2 penalty).")
     parser.add_argument('--batch-size', type=int, default=64, help="Training/Validation/Test batch size.")
@@ -67,7 +67,7 @@ def parse_args():
     
     # System & Execution Arguments
     parser.add_argument('--num-workers', type=int, default=4, help="Number of workers for data loading.")
-    parser.add_argument('--gpu-id', type=int, default=1, help="GPU device ID to use.")
+    parser.add_argument('--gpu-id', type=int, default=0, help="GPU device ID to use.")
     
     return parser.parse_args()
 
