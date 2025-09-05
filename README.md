@@ -12,12 +12,12 @@
 
 ## 📝 Introduction
 
-WMViT3 is a novel lightweight Vision Transformer designed for computational polarimetric holography, enabling efficient and accurate classification of microplastics. Its core features include:
+WMViT3 is a lightweight Vision Transformer for efficient and accurate microplastic classification via computational polarimetric holography. Key highlights:
 
--   🏆 **High Performance**: Surpasses various mainstream lightweight models across classification accuracy on custom HPM-500 dataset.
--   ⚡ **Ultra-Lightweight**: Only **2.8M** parameters and **1.04G** FLOPs
--   💡 **Innovative Design**: Integrates **Wavelet Transform** module to enhance the model's perception of high-frequency physical features.
--   无需复杂预处理
+-   🏆 **High Performance**: Achieves superior classification accuracy compared to mainstream lightweight models on the custom HPM-500 dataset.
+-   ⚡ **Ultra-Lightweight**: Features just **2.8M** parameters and **1.04G** FLOPs for efficient deployment.
+-   💡 **Innovative Design**: Incorporates a **Wavelet Transform** module to improve recognition of high-frequency physical features.
+-   ✨ **Simple Workflow**: No complex preprocessing required.
 
 ## 🛠️ Installation
 
@@ -29,51 +29,55 @@ pip install -r requirements.txt
 
 ## 📥 Dataset & Pre-trained models
 -   **HPM-500 Dataset**:
-    The HPM-500 dataset contains 4,429 processed polarimetric holographic images across five common types of microplastics(ABS,PA6,PE,PP,PS).
+    The HPM-500 dataset contains 4,429 single-particle polarimetric holographic images across five microplastic types: ABS, PA6, PE, PP, and PS.
     ```
     https://pan.baidu.com/s/15yPLk2tmB3wMKBb7_cOHoA?pwd=resu
     ```
 -   **Pre-trained Models**:
-    The model weights pre-trained on the HPM-500 dataset are provided for rapid validation and testing.
+    All models for comparison are trained from scratch on the HPM-500 dataset. Pre-trained weights are available for fast inference and validation.
     ```
     https://pan.baidu.com/s/1qXeXNllN6QL7QRu5_2YeNQ?pwd=resu
     ```
--   **Demo Dataset**:
-    This project includes a small demo dataset in the `wmvit3/datas/input_example`, which all are ABS. You can use it to quickly test the model's inference and visualization capabilities without downloading the full dataset.
-<!-- -   **Model Compare Results**:
+    <!-- -   **Model Compare Results**:
     ```
     https://pan.baidu.com/s/1r_fv_YZc8XXWGqHnAguyYg?pwd=resu
     ``` -->
     
 ## 🚀 Quick Start
 
-### 1. Quick Demo
-before running, download the pre-trained weights. put them in the `outputs/weights/`
-To help you get started quickly, we offer a demonstration script, `test_example.py`, which runs on `wmvit3/datas/input_example`. After running the script, you will find the following outputs in each model's result folder:
-- prediction.csv: A file containing the predicted class for each sample.
-- grad-cam images: Visualization maps highlighting the areas the model focused on for its prediction.
-```bash
+### Inference
+```
+# 1. Preprocess the raw HPM-500 dataset
+python utils/preprocess_img.py --src_path wmvit3/datas/After --det_path wmvit3/datas/Input
+
+# 2. Inference using pre-trained weights
+python test.py --data_dir wmvit3/datas/Input --output_dir wmvit3/outputs
+```
+**note:**
+- `--src_path`: Path to the raw HPM-500 dataset.
+- `--det_path`: Directory to save preprocessed images.
+- `--data_dir`: Path to preprocessed images for training/inference (same as `--det_path`).
+- `--output_dir`: Directory for inference results. Place downloaded weights in `outputs/weights/` before running inference.
+
+After running, each model folder includes `grad_cam` and `confusion_matrix` files. The `outputs/compare_test.csv` file provides a summary of all models' test metrics: top-1 accuracy, precision, recall, F1-score, and average inference time per sample.
+
+### Training
+```
+python train.py --data_dir wmvit/datas/Input --batch_size 64 --epochs 200
+```
+**note:**
+- `--data_dir`: Path to preprocessed images for training or inference.
+  
+### Visualization Example
+```
 python test_example.py
 ```
-### 2. Full Evaluation
-`test.py` is the official script for evaluating the model's performance on the complete test set.
-
-**Note:** Before running, please ensure you have downloaded the `HPM-500` dataset.** and put them in the `datas/After`
-
-The script will calculate each model inference's **Accuracy, Precision, Recall, F1-Score**, and **average inference time**.
-```bash
-python utils/preprocess_img.py --src_path wmvit3/datas/After --det_path wmvit3/datas/Input
-python test.py
-```
-### 3. Training
-    ```bash
-    python train.py --data_dir wmvit/datas/Input --batch_size 64 --epochs 200
-    ```
+Find Grad-CAM attention maps for input examples in the `grad_cam_example` folder under each model in `outputs/`. These correspond to the results shown in the visualization section below.
 
 ## 📊 Results
 
-### Visual Analysis
-Grad-CAM visualizations demonstrate that WMViT3 (bottom row) accurately focuses on key physical features like particle edges and interference fringes. In contrast, the baseline model's attention (top row) is more diffuse and less precise.
+### Visualization
+Grad-CAM visualizations reveal that WMViT3 (rightmost column) accurately attends to both internal morphological features and high-frequency interference fringes, while effectively filtering out background noise. In comparison, baseline models show less focused attention and often overlook key physical details.
 
 <div align="center">
     <img src="assets/cam_results.png" width="800"/>
@@ -264,4 +268,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## 🤝 Contributing
 
 Contributions are welcome! If you have any questions or suggestions, please feel free to open an issue or submit a pull request.
-```
+
